@@ -1,0 +1,98 @@
+﻿<div class="container col-lg-12">
+
+    <div>
+        <div>
+            <table class="table table-bordered bootstrap-admin-table-with-actions pro_table">
+                <thead>
+                <div ui-content-for="title">
+                    <div class="col-sm-12 project_top">
+                        <u class="project_top_icon"></u>
+                        <span>软件列表</span>
+                    </div>
+                    <div class="left bootstrap-admin-above-content-title mar_bot30"
+                         ng-if="security.hasPermission(PERMISSION.SOFTWARE_CREATE)">
+                        <a ui-sref=".softWaresAdd">
+                            <button class="btn btn-sm btn-success">
+                                <i class="glyphicon glyphicon-plus"></i> 添加软件
+                            </button>
+                        </a>
+                    </div>
+
+						<span class="small right search_father" ng-if="security.hasPermission(PERMISSION.SOFTWARE_SEARCH)">
+							<input class="form-control input_sth" ng-model="versionControl.softwareSearch" ng-keydown="searchKeyDown($event,'enter')"
+                                   placeholder="请输入医院名称、项目名称或软件名称">
+							<button type="button" class="btn btn-success btn_green"
+                                    ng-click="searchKeyDown($event,'button')">搜索
+                            </button>
+							<u class="search_icon"></u>
+						</span>
+                </div>
+
+                <tr class="tr_top_back">
+                    <th>序号</th>
+                    <th><a href="" ng-click="predicate = 'softwareId'; reverse=!reverse">医院名称</a></th>
+                    <th><a href="" ng-click="predicate = 'softwareId'; reverse=!reverse">项目名称</a></th>
+                    <th><a href="" ng-click="predicate = 'softwareId'; reverse=!reverse">软件ID</a></th>
+                    <th><a href="" ng-click="predicate = 'softwareName'; reverse=!reverse">软件名称</a></th>
+                    <th><a href="" ng-click="predicate = 'softwareType'; reverse=!reverse">软件类型</a></th>
+                    <th><a href="" ng-click="predicate = 'commonName'; reverse=!reverse">通用名称</a></th>
+                    <th><a href="" ng-click="predicate = 'appVersionNumber'; reverse=!reverse">最新市场版本</a></th>
+                    <th><a href="" ng-click="predicate = 'zipVersionNumber'; reverse=!reverse">最新ZIP版本</a></th>
+                    <th ng-if="security.hasPermission(PERMISSION.SOFTWARE_UPDATE)||
+                        security.hasPermission(PERMISSION.SOFTWARE_VERSION)">
+                        <a>操作</a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody ng-show="versionControl.softwareList.length>0">
+                <tr ng-repeat="software in versionControl.softwareList | orderBy:predicate:reverse| filter:query">
+                    <td style="border-top:0;border-color:#f0f0f0;" ng-bind="$index+startindex">1</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{software.hospitalName}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{software.projectName}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{software.softwareId}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{software.softwareName}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;" ng-switch on="software.softwareType">
+                        <span ng-switch-when='1'>Android</span>
+                        <span ng-switch-when='2'>iOS</span>
+                        <span ng-switch-when='3'>WinStore</span>
+                        <span ng-switch-when='4'>WinPhone</span>
+                    </td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{software.commonName}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{software.latestVersion.appVersionNumber}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{software.latestVersion.zipVersionNumber}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;" class="actions"
+                        ng-if="security.hasPermission(PERMISSION.SOFTWARE_UPDATE)||
+                        security.hasPermission(PERMISSION.SOFTWARE_VERSION)">
+                        <a ui-sref=".softWaresEdit({softwareId : software.vcProjectSoftwareId})" title="修改"
+                           ng-if="security.hasPermission(PERMISSION.SOFTWARE_UPDATE)" >
+                            <button class=" btn btn-xs btn-group btn_father">
+                                <i class="edit"></i>
+                            </button>
+                        </a>
+                        <a ui-sref=".versionsList({vSid : software.vcProjectSoftwareId})" title="查看版本"
+                           ng-if="security.hasPermission(PERMISSION.SOFTWARE_VERSION)">
+                            <button class=" btn btn-xs btn-group btn_father">
+                                <i class="look"></i>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="panel-body project_null" ng-show="versionControl.softwareList.length<=0&&(!softwareSearch||softwareSearch=='')">
+                <div class="no-data">
+                    请添加软件!
+                </div>
+            </div>
+
+            <div class="panel-body project_null" ng-show="versionControl.softwareList.length<=0&&(softwareSearch)">
+                <div class="no-data">
+                    暂无相关结果!
+                </div>
+            </div>
+        </div>
+        <div class="right" ng-show="versionControl.softwareList.length>0">
+            <tm-pagination conf="softwarePaginationConf"></tm-pagination>
+        </div>
+    </div>
+</div>

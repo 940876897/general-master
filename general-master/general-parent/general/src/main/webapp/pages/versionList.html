@@ -1,0 +1,108 @@
+﻿<div class="container col-lg-12">
+
+    <div>
+        <div>
+            <table class="table table-bordered bootstrap-admin-table-with-actions pro_table">
+                <thead>
+                <div class="bootstrap-admin-content-title text-center">
+                    <h1 class="h1_title">{{versionTitle}}</h1>
+                </div>
+                <div class="bootstrap-admin-content-title text-center">
+                    <h2 class="h2_title">{{versionSubTitle}} </h2>
+                </div>
+                <a ui-sref=".versionsAdd" ng-if="security.hasPermission(PERMISSION.VERSION_CREATE)">
+                    <button class="btn btn-sm btn-success btn_green mar_bot30">
+                        <i class="glyphicon glyphicon-plus"></i> 添加版本
+                    </button>
+                </a>
+                <tr class="tr_top_back">
+                    <th>序号</th>
+                    <th><a href="" ng-click="predicate = 'currentMaxAppVersion'; reverse=!reverse">APP版本号</a></th>
+                    <th><a href="" ng-click="predicate = 'currentMaxZipVersion'; reverse=!reverse">资源版本号</a></th>
+                    <th><a href="" ng-click="predicate = 'releaseTime'; reverse=!reverse">发布时间</a></th>
+                    <th><a href="" ng-click="predicate = 'appDownloadUrl'; reverse=!reverse">应用下载地址</a></th>
+                    <th><a href="" ng-click="predicate = 'appForceUpdate'; reverse=!reverse">备注</a></th>
+                    <th ng-if="security.hasPermission(PERMISSION.VERSION_UPDATE)||
+                               security.hasPermission(PERMISSION.VERSION_UNSHELVE)">
+                        <a>操作</a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody ng-show="versionControl.lstVersion.length>0">
+                <tr ng-repeat="version in versionControl.lstVersion | orderBy:predicate:reverse| filter:query">
+                    <td style="border-top:0;border-color:#f0f0f0;" ng-bind="$index+startIndex">1</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{version.currentMaxAppVersion}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{version.currentMaxZipVersion}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{version.releaseTime.time| date:'yyyy.MM.dd
+                        HH:mm'}}
+                    </td>
+                    <td style="max-width:300px;border-top:0;border-color:#f0f0f0;">
+                        <a ng-show='version.isZip!=1' href="{{version.appDownloadUrl}}"
+                           style="white-space: normal;word-break: break-all;">
+                            {{version.appDownloadUrl}}
+                        </a>
+                    </td>
+                    <td style="border-top:0;border-color:#f0f0f0;" ng-switch on="version.isZip">
+							<span ng-switch-when="0">
+								APP更新
+							</span>
+							<span ng-switch-when="1">
+								资源更新
+							</span>
+							<span ng-switch-when="2">
+								两者都更新
+							</span>
+                    </td>
+                    <td style="border-top:0;border-color:#f0f0f0;" class="actions" ng-switch on="version.isOffShelves"
+                        ng-if="security.hasPermission(PERMISSION.VERSION_UPDATE)||security.hasPermission(PERMISSION.VERSION_UNSHELVE)">
+							<span ng-switch-when="0">
+								<a ui-sref=".versionsEdit({vid : version.vcSoftwareVersionId})" title="修改"
+                                   ng-if="security.hasPermission(PERMISSION.VERSION_UPDATE)">
+                                    <button class="btn btn-xs btn-group btn_father">
+                                        <i class="edit"></i>
+                                    </button>
+                                </a>
+								<button class="btn btn-xs btn_father" ng-click="versionsOff(version)" title="下架"
+                                        ng-if="security.hasPermission(PERMISSION.VERSION_UNSHELVE)">
+                                    <i class="off_shelf"></i>
+                                </button>
+							</span>
+							<span ng-switch-when="1">
+								<a ui-sref=".versionsEdit({vid : version.vcSoftwareVersionId})" title="修改"
+                                   ng-if="security.hasPermission(PERMISSION.VERSION_UPDATE)">
+                                    <button class="btn btn-xs btn-group btn_father">
+                                        <i class="edit"></i>
+                                    </button>
+                                </a>
+								<button class="btn btn-xs btn_father" ng-click="versionsOff(version)" title="下架"
+                                        ng-if="security.hasPermission(PERMISSION.VERSION_UNSHELVE)">
+                                    <i class="off_shelf"></i>
+                                </button>
+							</span>
+							<span ng-switch-when="2">
+								<a ui-sref=".versionsEdit({vid : version.vcSoftwareVersionId})" title="修改"
+                                   ng-if="security.hasPermission(PERMISSION.VERSION_UPDATE)">
+                                    <button class="btn btn-xs btn-group btn_father">
+                                        <i class="edit"></i>
+                                    </button>
+                                </a>
+								<button class="btn btn-xs disabled off_shelfed " title="已下架"
+                                        ng-if="security.hasPermission(PERMISSION.VERSION_UNSHELVE)">
+                                    &nbsp;已下架&nbsp;
+                                </button>
+							</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="panel-body project_null" ng-show="versionControl.lstVersion.length<=0">
+                <div class="no-data">
+                    请添加版本!
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+</div>

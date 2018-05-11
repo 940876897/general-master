@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ucmed.general.shiro.dao.UserRoleMapper">
+
+
+	<insert id="batchAddRoleToUser"
+			parameterType="java.util.Set">
+		insert into ur_users_roles
+		(ur_users_roles_id,u_users_id, r_roles_id,
+		createdby, createdon, modifiedby, modifiedon,
+		deletion_state, description)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(
+			#{item.userRoleId,jdbcType=VARCHAR},
+			#{item.uUsersId,jdbcType=VARCHAR},
+			#{item.rRolesId,jdbcType=VARCHAR},
+			#{item.createdby,jdbcType=VARCHAR},
+			#{item.createdon,jdbcType=TIMESTAMP},
+			#{item.modifiedby,jdbcType=VARCHAR},
+			#{item.modifiedon,jdbcType=TIMESTAMP},
+			#{item.deletionState,jdbcType=CHAR},
+			#{item.description,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+
+
+
+	<update id="batchDeleteByRoleId" parameterType="java.util.List">
+		update ur_users_roles set deletion_state = '1' where
+		r_roles_id=#{roleId,jdbcType=VARCHAR} and
+		u_users_id in
+		<foreach collection="list" item="item" open="(" separator=","
+				 close=")">
+			#{item.userId,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+
+
+	<update id="batchDeleteByUserId" parameterType="java.util.List">
+		update ur_users_roles set deletion_state = '1' where
+		u_users_id=#{userId,jdbcType=VARCHAR} and
+		r_roles_id in
+		<foreach collection="list" item="item" open="(" separator=","
+				 close=")">
+			#{item.roleId,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+
+</mapper>

@@ -1,0 +1,94 @@
+<div class="container col-lg-12">
+
+    <div>
+        <div class="project_table">
+            <table class="table table-bordered bootstrap-admin-table-with-actions pro_table">
+                <thead>
+                <div ui-content-for="title">
+                    <div class="col-sm-12 project_top">
+                        <u class="project_top_icon"></u>
+                        <span>角色管理</span>
+                    </div>
+                    <div class="left bootstrap-admin-above-content-title mar_bot30"
+                         ng-if="security.hasPermission(PERMISSION.ROLE_CREATE)">
+                        <a ui-sref=".roleAdd">
+                            <button class="btn btn-sm btn-success">
+                                <i class="glyphicon glyphicon-plus"></i> 添加角色
+                            </button>
+                        </a>
+                    </div>
+
+						<span class="small right search_father"
+                              ng-if="security.hasPermission(PERMISSION.ROLE_SEARCH)">
+							<input class="form-control input_sth" ng-model="roleModel.search" ng-keydown="searchKeyDown($event,'enter')"
+                                   placeholder="请输入角色名">
+							<button type="button" class="btn btn-success btn_green"
+                                    ng-click="searchKeyDown($event,'button')">搜索
+                            </button>
+							<u class="search_icon"></u>
+						</span>
+                </div>
+                <tr class="tr_top_back">
+                    <th>序号</th>
+                    <th><a href="" ng-click="predicate = 'roleName'; reverse=!reverse">角色名</a></th>
+                    <th><a href="" ng-click="predicate = 'createdon'; reverse=!reverse">创建时间</a></th>
+                    <th style="width: 395px" ng-if="security.hasPermission(PERMISSION.ROLE_PERMISSION)||
+                               security.hasPermission(PERMISSION.ROLE_USER)||
+                               security.hasPermission(PERMISSION.ROLE_UPDATE)||
+                               security.hasPermission(PERMISSION.ROLE_DELETE)">
+                        <a>操作</a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="name" ng-show="roleModel.lstRole.length>0">
+                <tr ng-repeat="r in roleModel.lstRole | orderBy:predicate:reverse">
+                    <td style="border-top:0;border-color:#f0f0f0;" ng-bind="$index+startIndex">1</td>
+
+                    <td style="border-top:0;border-color:#f0f0f0;">{{r.roleName}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{r.createdon| date:'yyyy/MM/dd'}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;" class="actions"
+                        ng-if="security.hasPermission(PERMISSION.ROLE_PERMISSION)||
+                               security.hasPermission(PERMISSION.ROLE_USER)||
+                               security.hasPermission(PERMISSION.ROLE_UPDATE)||
+                               security.hasPermission(PERMISSION.ROLE_DELETE)">
+                        <a ui-sref=".permissionAssignment({rid : r.roleId})" title="权限分配"
+                           ng-if="security.hasPermission(PERMISSION.ROLE_PERMISSION)">
+                            <button type="button" class="btn btn-success btn_green">
+                                权限分配
+                            </button>
+                        </a>
+                        <button type="button" class="btn btn-success btn_green" ng-click="manageUser(r)"
+                                ng-if="security.hasPermission(PERMISSION.ROLE_USER)">
+                            管理成员
+                        </button>
+                        <a ui-sref=".roleEdit({roleid : r.roleId})" title="修改"
+                           ng-if="security.hasPermission(PERMISSION.ROLE_UPDATE)">
+                            <button type="button" class="btn btn-success btn_green">
+                                修改
+                            </button>
+                        </a>
+                        <button type="button" class="btn btn-success btn_green" ng-click="deleteRole(r)"
+                                ng-if="security.hasPermission(PERMISSION.ROLE_DELETE)">
+                            删除
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="panel-body project_null" ng-show="roleModel.lstRole.length<=0&&(!search||search=='')">
+                <div class="no-data">
+                    请添加角色信息!
+                </div>
+            </div>
+
+            <div class="panel-body project_null" ng-show="roleModel.lstRole.length<=0&&(search)">
+                <div class="no-data">
+                    暂无相关结果!
+                </div>
+            </div>
+        </div>
+        <div class="right" ng-show="roleModel.lstRole.length>0">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+</div>

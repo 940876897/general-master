@@ -1,0 +1,96 @@
+﻿<div class="container col-lg-12">
+
+    <div>
+        <div class="project_table">
+            <table class="table table-bordered bootstrap-admin-table-with-actions pro_table">
+                <thead>
+                <div ui-content-for="title">
+                    <div class="col-sm-12 project_top">
+                        <u class="project_top_icon"></u>
+                        <span>用户管理</span>
+                    </div>
+                    <div class="left bootstrap-admin-above-content-title mar_bot30"
+                         ng-if="security.hasPermission(PERMISSION.USER_CREATE)">
+                        <a ui-sref=".userAdd">
+                            <button class="btn btn-sm btn-success">
+                                <i class="glyphicon glyphicon-plus"></i> 添加用户
+                            </button>
+                        </a>
+                    </div>
+
+						<span class="small right search_father"
+                              ng-if="security.hasPermission(PERMISSION.USER_SEARCH)">
+							<input class="form-control input_sth" ng-model="userModel.search"
+                                   ng-keydown="searchKeyDown($event,'enter')"
+                                   placeholder="请输入用户名或姓名">
+							<button type="button" class="btn btn-success btn_green"
+                                    ng-click="searchKeyDown($event,'button')">搜索
+                            </button>
+							<u class="search_icon"></u>
+						</span>
+                </div>
+                <tr class="tr_top_back">
+                    <th>序号</th>
+                    <th><a href="" ng-click="predicate = 'username'; reverse=!reverse">用户名</a></th>
+                    <th><a href="" ng-click="predicate = 'surname'; reverse=!reverse">姓名</a></th>
+                    <th><a href="" ng-click="predicate = 'email'; reverse=!reverse">邮箱</a></th>
+                    <th><a href="" ng-click="predicate = 'mobile'; reverse=!reverse">移动电话</a></th>
+                    <th><a href="" ng-click="predicate = 'createdon'; reverse=!reverse">创建时间</a></th>
+                    <th ng-if="security.hasPermission(PERMISSION.USER_UPDATE)||
+                               security.hasPermission(PERMISSION.USER_RESETPSW)||
+                               security.hasPermission(PERMISSION.USER_DELETE)">
+                        <a>操作</a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="name" ng-show="userModel.lstUser.length>0">
+                <tr ng-repeat="u in userModel.lstUser | orderBy:predicate:reverse">
+                    <td style="border-top:0;border-color:#f0f0f0;" ng-bind="$index+startIndex">1</td>
+
+                    <td style="border-top:0;border-color:#f0f0f0;">{{u.username}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{u.surname}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{u.email}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{u.mobile}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{u.createdon| date:'yyyy/MM/dd'}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;" class="actions"
+                        ng-if="security.hasPermission(PERMISSION.USER_UPDATE)||
+                               security.hasPermission(PERMISSION.USER_RESETPSW)||
+                               security.hasPermission(PERMISSION.USER_DELETE)">
+                        <a ui-sref=".userEdit({userid : u.userId})" title="修改"
+                           ng-if="u.userId!=(globals.currentUser.userId)&&security.hasPermission(PERMISSION.USER_UPDATE)">
+                            <button type=" button"
+                                    class="btn btn-success btn_green">修改
+                            </button>
+                        </a>
+                        <button type="button" class="btn btn-success btn_green" ng-click="restPassword(u)"
+                                ng-if="u.userId!=(globals.currentUser.userId)&&security.hasPermission(PERMISSION.USER_RESETPSW)">
+                            密码重置
+                        </button>
+                        <button type="button"
+                                class="btn btn-success btn_green" ng-click="deleteUser(u)"
+                                ng-if="u.userId!=(globals.currentUser.userId)&&security.hasPermission(PERMISSION.USER_DELETE)">
+                            删除
+                        </button>
+                        <div ng-if="u.userId==(globals.currentUser.userId)">无法操作当前用户</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="panel-body project_null"
+                 ng-show="userModel.lstUser.length<=0&&(!search||search=='')">
+                <div class="no-data">
+                    请添加用户信息!
+                </div>
+            </div>
+
+            <div class="panel-body project_null" ng-show="userModel.lstUser.length<=0&&(search)">
+                <div class="no-data">
+                    暂无相关结果!
+                </div>
+            </div>
+        </div>
+        <div class="right" ng-show="userModel.lstUser.length>0">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+</div>

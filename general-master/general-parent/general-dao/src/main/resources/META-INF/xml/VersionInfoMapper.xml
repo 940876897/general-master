@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ucmed.general.vc.dao.VersionInfoMapper" >
+  <resultMap id="BaseResultMap" type="cn.ucmed.general.vc.model.VersionInfo" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="version_info_id" property="versionInfoId" jdbcType="VARCHAR" />
+    <result column="software_id" property="softwareId" jdbcType="INTEGER" />
+    <result column="app_version_number" property="appVersionNumber" jdbcType="VARCHAR" />
+    <result column="app_download_url" property="appDownloadUrl" jdbcType="VARCHAR" />
+    <result column="zip_version_number" property="zipVersionNumber" jdbcType="VARCHAR" />
+    <result column="zip_download_url" property="zipDownloadUrl" jdbcType="VARCHAR" />
+    <result column="app_desc" property="appDesc" jdbcType="VARCHAR" />
+    <result column="zip_desc" property="zipDesc" jdbcType="VARCHAR" />
+    <result column="latest_force_update_version" property="latestForceUpdateVersion" jdbcType="VARCHAR" />
+    <result column="zip_version_state" property="zipVersionState" jdbcType="CHAR" />
+    <result column="software_update_time" property="softwareUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="createdby" property="createdby" jdbcType="VARCHAR" />
+    <result column="createdon" property="createdon" jdbcType="TIMESTAMP" />
+    <result column="modifiedby" property="modifiedby" jdbcType="VARCHAR" />
+    <result column="modifiedon" property="modifiedon" jdbcType="TIMESTAMP" />
+    <result column="deletion_state" property="deletionState" jdbcType="CHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

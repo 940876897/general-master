@@ -1,0 +1,60 @@
+<div class="container col-lg-12">
+    <div class="panel panel-default">
+        <div class="bootstrap-admin-panel-content">
+            <div class="page-header">
+                <h1>修改角色</h1>
+            </div>
+
+            <form class="form-horizontal" name="submitForm" novalidate>
+                <!-- id -->
+                <input type="hidden" name="roleId" class="form-control" ng-model="role.roleId">
+
+                <!-- 角色名 -->
+                <div class="form-group" ng-class="{ 'has-error' : submitForm.roleName.$invalid && !roleForm.roleName.$pristine }">
+                    <label class="col-lg-2 control-label" for="roleName"><span class="text-danger">*</span>&nbsp;角色名:</label>
+                    <div class="col-lg-8">
+                        <input type="text" name="roleName" class="form-control" ng-model="role.roleName"
+                               id="rolename" ng-minlength="1" ng-maxlength="50"
+                               ng-blur="roleModel.ifExistRoleName(role,submitForm.roleName)"
+                               ng-keydown="role.exists=false" required>
+
+                        <p ng-show="role.exists" class="help-block">
+                            角色名[{{role.inputrolename}}]已存在。</p>
+
+                        <p ng-show="submitForm.roleName.$invalid && !submitForm.roleName.$pristine" class="help-block">
+                            请输入1~50位的角色名称.</p> </div>
+                </div>
+
+                <!-- 修改描述信息 -->
+                <div class="form-group" ng-class="{ 'has-error' : submitForm.description.$invalid && !roleForm.description.$pristine }">
+                    <label class="col-lg-2 control-label" for="description"><span class="text-danger">*</span>&nbsp;描述:</label>
+                    <div class="col-lg-8">
+                        <textarea type="text" name="description" class="form-control" ng-model="role.description" id="description" placeholder="请输入描述信息" ng-minlength="1" ng-maxlength="500" required>
+                        </textarea>
+                        <p ng-show="submitForm.description.$invalid && !submitForm.description.$pristine" class="help-block">请输入1~500位的描述信息.</p>
+                    </div>
+                </div>
+
+                <!-- 创建时间 -->
+                <div class="form-group" ng-class="{ 'has-error' : submitForm.createdon.$invalid && !roleForm.createdon.$pristine }">
+                    <label class="col-lg-2 control-label"><span class="text-danger"></span>&nbsp;创建时间:</label>
+                    <div class="col-lg-8">
+                        <input type="text" readonly="readonly"  class="form-control"  placeholder="{{role.createdon| date:'yyyy/MM/dd'}}" ng-minlength="1" ng-maxlength="50" required>
+                    </div>
+                </div>
+
+                <div class="ebtn_box">
+                    <button class="btn btn-success" ng-click="roleModel.editRole(submitForm.$valid,role)" ng-disabled="submitForm.$invalid">
+                        <i class="glyphicon glyphicon-edit"></i>保存
+                    </button>
+
+                    <a ui-sref="^">
+                        <button class="btn btn-success">
+                            <i class="glyphicon glyphicon-remove-circle"></i> 取消
+                        </button>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

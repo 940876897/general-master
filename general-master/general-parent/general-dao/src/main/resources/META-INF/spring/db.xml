@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:apollo="http://www.ctrip.com/schema/apollo"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.ctrip.com/schema/apollo
+        http://www.ctrip.com/schema/apollo.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
+       default-autowire="byName">
+
+    <apollo:config/>
+	   
+    <context:component-scan base-package="cn.ucmed.common.orika"/>
+	
+    <dubbo:application name="${dubbo.application.name}"  owner="${dubbo.application.owner}"
+                       organization="${dubbo.application.organization}"/>
+    <dubbo:registry address="${dubbo.registry.address}" 
+                    group="${dubbo.registry.group}" check="${dubbo.registry.check}"/>
+    <dubbo:protocol name="dubbo" />
+	
+</beans>

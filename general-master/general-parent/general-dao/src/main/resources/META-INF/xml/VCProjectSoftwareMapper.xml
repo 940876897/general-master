@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ucmed.general.vc.dao.VCProjectSoftwareMapper">
+
+	<resultMap type="cn.ucmed.general.vc.model.VCSoftwareVersionModel"
+		id="vcSoftwareVersionResultMap">
+		<id property="vcSoftwareVersionId" column="vc_software_version_id" />
+		<result property="vcProjectSoftwareId" column="vc_project_software_id" />
+		<result property="versionNumber" column="version_number" />
+		<result property="appVersionNumber" column="app_version_number" />
+		<result property="releaseTime" column="release_time" />
+		<result property="appDownloadUrl" column="app_download_url" />
+		<result property="appForceUpdate" column="app_force_update" />
+		<result property="zipVersionNumber" column="zip_version_number" />
+		<result property="zipDownloadUrl" column="zip_download_url" />
+		<result property="isOffShelves" column="is_off_shelves" />
+		<result property="createdby" column="createdby" />
+		<result property="createdon" column="createdon" />
+		<result property="modifiedby" column="modifiedby" />
+		<result property="modifiedon" column="modifiedon" />
+		<result property="deletionState" column="deletion_state" />
+		<result property="description" column="description" />
+		<result property="zipDesc" column="zip_desc" />
+		<result property="appDesc" column="app_desc" />
+	</resultMap>
+
+	<resultMap type="cn.ucmed.general.vc.model.VCProjectSoftwareModel"
+		id="vcProjectSoftwareResultMap">
+		<id property="vcProjectSoftwareId" column="vc_project_software_id" />
+		<result property="vcProjectId" column="vc_project_id" />
+		<result property="softwareName" column="software_name" />
+		<result property="commonName" column="common_name" />
+		<result property="softwareType" column="software_type" />
+		<result property="softwareId" column="software_id" />
+		<result property="hasUpdate" column="hasUpdate" />
+		<result property="createdby" column="createdby" />
+		<result property="createdon" column="createdon" />
+		<result property="modifiedby" column="modifiedby" />
+		<result property="modifiedon" column="modifiedon" />
+		<result property="deletionState" column="deletion_state" />
+		<result property="description" column="description" />
+		<result property="latestForceUpdateVersion" column="latestForceUpdateVersion" />
+	</resultMap>
+
+	<select id="getSoftwareVersionList" parameterType="string"
+		resultType="cn.ucmed.general.vc.model.VCSoftwareVersionModel"
+		resultMap="vcSoftwareVersionResultMap">
+		select
+		*
+		from vc_software_version vsv
+		where version_number =
+		(select max(version_number)
+		from vc_software_version as subvsv
+		where
+		subvsv.vc_project_software_id = vsv.vc_project_software_id and
+		deletion_state='0')
+		and vc_project_software_id = #{vcProjectSoftwareId}
+	</select>
+
+</mapper>

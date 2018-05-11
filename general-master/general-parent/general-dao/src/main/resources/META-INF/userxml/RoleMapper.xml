@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ucmed.general.shiro.dao.RoleMapper">
+
+    <resultMap id="RoleResultMap" type="cn.ucmed.general.shiro.model.Role">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="r_roles_id" property="roleId" jdbcType="VARCHAR"/>
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="app_key" property="appKey" jdbcType="VARCHAR"/>
+        <result column="createdby" property="createdby" jdbcType="VARCHAR"/>
+        <result column="createdon" property="createdon" jdbcType="TIMESTAMP"/>
+        <result column="modifiedby" property="modifiedby" jdbcType="VARCHAR"/>
+        <result column="modifiedon" property="modifiedon" jdbcType="TIMESTAMP"/>
+        <result column="deletion_state" property="deletionState" jdbcType="CHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="countAll" parameterType="java.util.Set" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM r_roles
+        WHERE deletion_state='0'
+        AND app_key = #{appKey,jdbcType=VARCHAR}
+        AND r_roles_id NOT IN
+        <foreach item="id" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        AND (#{search,jdbcType=VARCHAR} IS NULL
+        OR (role_name LIKE CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')))
+    </select>
+
+    <select id="loadList" parameterType="java.util.List"
+            resultType="cn.ucmed.general.shiro.model.Role"
+            resultMap="RoleResultMap">
+        SELECT
+        r_roles_id, role_name,app_key,createdby,createdon,
+        modifiedby,modifiedon,deletion_state,description
+        FROM r_roles
+        WHERE deletion_state='0'
+        AND app_key = #{appKey,jdbcType=VARCHAR}
+        AND r_roles_id NOT IN
+        <foreach item="id" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectPaginated" parameterType="java.util.Set"
+            resultType="cn.ucmed.general.shiro.model.Role"
+            resultMap="RoleResultMap">
+        SELECT
+        r_roles_id, role_name,app_key,createdby,createdon,
+        modifiedby,modifiedon,deletion_state,description
+        FROM r_roles
+        WHERE deletion_state='0'
+        AND r_roles_id NOT IN
+        <foreach item="id" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        AND app_key = #{appKey,jdbcType=VARCHAR}
+        AND( #{search,jdbcType=VARCHAR} IS NULL
+        OR(
+        role_name LIKE CONCAT(CONCAT('%', #{search,jdbcType=VARCHAR}),'%')))
+        ORDER BY createdon DESC
+        limit #{start,jdbcType=BIGINT}, #{offset,jdbcType=BIGINT}
+    </select>
+
+
+</mapper>

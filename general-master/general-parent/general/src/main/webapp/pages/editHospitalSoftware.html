@@ -1,0 +1,122 @@
+﻿<div class="container col-lg-12">
+    <div class="panel panel-default">
+        <div class="bootstrap-admin-panel-content">
+            <!-- PAGE HEADER -->
+            <div class="page-header">
+                <h1>修改软件</h1>
+            </div>
+
+            <!-- FORM -->
+            <form name="submitForm" class="form-horizontal" novalidate>
+
+
+                <!-- 医院名称 -->
+                <div class="form-group"
+                     ng-class="{ 'has-error' : submitForm.hospitalId.$invalid && !submitForm.hospitalId.$pristine }">
+                    <label class="col-lg-2 control-label"><span class="text-danger">*</span>&nbsp;医院名称</label>
+
+                    <div class="col-lg-8">
+                        <select ng-model="hSoftware.hospitalName" ng-required="true" ng-change="versionControl.selectHospitalChangEdit(hSoftware)" ng-options="h.hospitalName as h.hospitalName for h in hlist">
+                            <option value="">-- 请选择 --</option>
+                        </select>
+                        <p ng-show="submitForm.hospitalId.$invalid && !submitForm.hospitalId.$pristine"
+                           class="help-block"> 请选择医院名称。</p>
+                    </div>
+                </div>
+
+
+                <!-- 项目名称 -->
+                <div class="form-group"
+                     ng-class="{ 'has-error' : submitForm.projectId.$invalid && !submitForm.projectId.$pristine }">
+                    <label class="col-lg-2 control-label"><span class="text-danger">*</span>&nbsp;项目名称</label>
+
+                    <div class="col-lg-8">
+
+                        <select ng-model="hSoftware.projectName" ng-required="true" ng-change="versionControl.changProjectIdEdit(hSoftware)" ng-options="p.projectName as p.projectName for p in versionControl.projectList">
+                            <option value="">-- 请选择 --</option>
+                        </select>
+
+                        <p ng-show="submitForm.projectId.$invalid && !submitForm.projectId.$pristine"
+                           class="help-block"> 请选择项目名称。</p>
+                    </div>
+                </div>
+
+
+
+
+                <!-- softwareName -->
+                <div class="form-group"
+                     ng-class="{ 'has-error' : submitForm.softwareName.$invalid && !submitForm.softwareName.$pristine }">
+                    <label class="col-lg-2 control-label" for="sofname"><span
+                            class="text-danger">*</span>&nbsp;软件名称</label>
+
+                    <div class="col-lg-8">
+                        <input type="text" name="softwareName" class="form-control" ng-model="hSoftware.softwareName"
+                               placeholder="请输入完整的软件名称" ng-minlength="1" ng-maxlength="50" id="sofname"
+                               ng-required="true">
+
+                        <p ng-show="submitForm.softwareName.$invalid && !submitForm.softwareName.$pristine"
+                           class="help-block">请输入1~50位的软件名称.</p>
+                    </div>
+                </div>
+
+                <!-- softwareType -->
+                <div class="form-group"
+                     ng-class="{ 'has-error' : submitForm.softwareType.$invalid && !submitForm.softwareType.$pristine }">
+                    <label class="col-lg-2 control-label"><span class="text-danger">*</span>&nbsp;软件类型</label>
+
+                    <div class="col-lg-8">
+                        <select ng-model="hSoftware.softwareType" ng-required="true">
+                            <option value="">-- 请选择 --</option>
+                            <option value='1'>Android</option>
+                            <option value='2'>iOS</option>
+                            <option value='3'>WinStore</option>
+                            <option value='4'>WinPhone</option>
+                        </select>
+
+                        <p ng-show="submitForm.softwareType.$invalid && !submitForm.softwareType.$pristine"
+                           class="help-block"> 请选择软件类型。</p>
+                    </div>
+                </div>
+
+                <!-- commonName -->
+                <div class="form-group"
+                     ng-class="{ 'has-error' : submitForm.commonName.$invalid && !submitForm.commonName.$pristine }">
+                    <label class="col-lg-2 control-label" for="comname">
+                        <span class="text-danger" ng-show="hSoftware.softwareType==1">*</span>&nbsp;通用名称</label>
+
+                    <div class="col-lg-8">
+                        <input type="text" name="commonName" class="form-control" ng-model="hSoftware.commonName"
+                               placeholder="请输入通用名称，如:zszy.apk" ng-pattern="/^[^\n]+\.[^\n]+$/" id="comname"
+                               ng-blur="versionControl.ifExistCommonName(hSoftware,submitForm.commonName)"
+                               ng-keydown="hSoftware.exists=false"
+                               ng-required="hSoftware.softwareType==1">
+
+                        <p ng-show="hSoftware.exists" class="help-block" style="color: #a94442;">
+                            通用名[{{hSoftware.inputcommonName}}]已存在。</p>
+
+                        <p ng-show="submitForm.commonName.$invalid && !submitForm.commonName.$pristine&&!hSoftware.exists"
+                           class="help-block">请输入通用名称，如:zszy.apk</p>
+                    </div>
+                </div>
+
+                <!-- vcProjectId -->
+                <input type="hidden" name="vcProjectId" class="form-control" ng-model="hSoftware.vcProjectId"
+                       ng-minlength="1" ng-maxlength="40">
+
+                <div class="ebtn_box">
+                    <button class="btn btn-success" ng-click="versionControl.updateSoftware(submitForm.$valid,hSoftware)"
+                            ng-disabled="submitForm.$invalid">
+                        <i class="glyphicon glyphicon-edit"></i>保存
+                    </button>
+
+                    <a ui-sref="^">
+                        <button class="btn btn-success">
+                            <i class="glyphicon glyphicon-remove-circle"></i>取消
+                        </button>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

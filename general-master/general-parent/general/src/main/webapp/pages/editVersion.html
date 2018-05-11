@@ -1,0 +1,205 @@
+﻿<div class="container col-lg-12">
+
+    <!-- PAGE HEADER -->
+
+    <form name="userForm" novalidate>
+        <div class="col-sm-12">
+            <div class="form-group col-sm-6"
+                 ng-class="{ 'has-error' : userForm.versionNumber.$invalid && !userForm.versionNumber.$pristine }">
+                <h3 class="col-sm-6" style="margin-top: 0;width: 100%;">{{versionControl.versionSubTitleForAdd}}</h3>
+            </div>
+
+            <!-- 发布时间 -->
+            <div class="form-group col-sm-4" date-time-append=""
+                 ng-class="{ 'has-error' : userForm.releaseTime.$invalid && !userForm.releaseTime.$pristine }">
+                <label class="col-sm-4 text_right">发布时间</label>
+                <span class="add-on"></span>
+                <input class="col-sm-8 ae_input ng-scope ng-touched ng-dirty ng-valid-parse ng-invalid ng-invalid-required"
+                       name="releaseTime" type="text" view="hours" ng-model="version.releaseTime.time" auto-close="true"
+                       date-time="" ng-readonly="true"/>
+                <span class="add-on"></span>
+
+                <p ng-show="userForm.releaseTime.$invalid && !userForm.releaseTime.$pristine" class="help-block">
+                    发布时间格式不正确。</p>
+            </div>
+
+            <!-- 最低支持版本号 -->
+            <div class="form-group col-sm-7 right"
+                 ng-class="{ 'has-error' : userForm.minimunSupportSystemVersion.$invalid && !userForm.minimunSupportSystemVersion.$pristine }">
+                <label class="col-sm-4 text_right">最低系统版本号</label>
+                <input type="text"
+                       name="minimunSupportSystemVersion"
+                       class="col-sm-4 ae_input"
+                       ng-model="version.minimunSupportSystemVersion">
+            </div>
+        </div>
+
+        <div class="col-sm-6" style="padding:0 20px">
+            <div class="col-sm-12 version_box">
+                <!-- 应用版本号［x.y.z］-->
+                <div class="ae_title">
+                    <p>应用信息</p>
+                </div>
+                <div class="form-group"
+                     ng-class="{ 'has-error' : userForm.appVersionNumber.$invalid && !userForm.appVersionNumber.$pristine }">
+                    <label>应用版本号</label>
+                    <input type="text" name="appVersionNumber" class="form-control" ng-model="version.appVersionNumber"
+                           ng-pattern="/^[\d]{1,8}\.[\d]{1,8}\.[\d]{1,8}$/">
+
+                    <p ng-show="userForm.appVersionNumber.$invalid && !userForm.appVersionNumber.$pristine"
+                       class="help-block">请填写应用版本号［x.y.z］，且只能是数字。</p>
+                </div>
+
+                <!-- 强制更新，Y是，N否-->
+                <div class="form-group">
+                    <label>更新类型</label>
+                    <select class="ae_input" ng-model="version.appForceUpdate">
+                        <option value="F">强制更新</option>
+                        <option value="R">建议更新</option>
+                    </select>
+                </div>
+
+                <!-- 应用描述-->
+                <div class="form-group"
+                     ng-class="{ 'has-error' : userForm.appDesc.$invalid && !userForm.appDesc.$pristine }">
+                    <label>应用描述</label>
+                    <textarea name="appDesc" class="form-control" ng-model="version.appDesc" rows="7"></textarea>
+
+                    <p ng-show="userForm.appDesc.$invalid && !userForm.appDesc.$pristine" class="help-block">
+                        请填写应用下载地址。</p>
+                </div>
+
+                <!-- 应用下载地址-->
+                <div class="form-group"
+                     ng-class="{ 'has-error' : userForm.appDownloadUrl.$invalid && !userForm.appDownloadUrl.$pristine }">
+                    <label>应用下载地址</label>
+                    <input type="text" name="appDownloadUrl" class="col-sm-4 form-control"
+                           ng-model="version.appDownloadUrl">
+
+                    <p ng-show="userForm.appDownloadUrl.$invalid && !userForm.appDownloadUrl.$pristine"
+                       class="help-block">请填写应用下载地址。</p>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="well">
+                                <div>
+                                    <div>
+                                        <span class="text-danger">点击上传后会覆盖当前应用下载地址，如需修改地址请先上传。</span>
+                                    </div>
+                                    <div class="up_delete_btn">
+                                        <span class="up_load_icon">点击添加<input type="file" id="apk_file"
+                                                                              multiple/></span>
+                                        <button ng-click="uploadFile(version.appDownloadUrl,'app',versionControl.commonName,version.appVersionNumber)">点击上传</button>
+                                    </div>
+                                </div>
+                                <div ng-repeat="file in files"
+                                     style="margin-top: 20px; border-bottom-color: antiquewhite; border-bottom-style: double;"
+                                     class="hidden">
+                                    <div ng-if="versionControl.file_type(file, 'apk')">
+                                        <span>{{file.name}}</span>
+
+                                        <div style="float: right;">
+                                            <span>{{file.humanSize}}</span><a ng-click="versionControl.btn_remove(file)"
+                                                                              title="Remove from list to be uploaded"><i
+                                                class="icon-remove"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-sm-6" style="padding:0 20px">
+            <div class="col-sm-12 version_box">
+                <div class="ae_title">
+                    <p>资源信息</p>
+                </div>
+                <!-- zip版本号［x.y.z］-->
+                <div class="form-group"
+                     ng-class="{ 'has-error' : userForm.zipVersionNumber.$invalid && !userForm.zipVersionNumber.$pristine }">
+                    <label>资源版本号</label>
+                    <input type="text" name="zipVersionNumber" class="form-control" ng-model="version.zipVersionNumber"
+                           ng-pattern="/^[\w]{1,8}\.[\w]{1,8}\.[\w]{1,8}$/">
+
+                    <p ng-show="userForm.zipVersionNumber.$invalid && !userForm.zipVersionNumber.$pristine"
+                       class="help-block">请填写资源版本号［x.y.z］。</p>
+                </div>
+
+
+                <!-- 资源更新类型：S静默更新,A全包更新,I增量更新-->
+                <div class="form-group">
+                    <label>更新类型</label>
+                    <select class="ae_input" ng-model="version.zipForceUpdate">
+                        <option value="A">全包更新</option>
+                        <option value="I">增量更新</option>
+                        <option value="S">静默更新</option>
+                    </select>
+                </div>
+
+                <!-- zip描述-->
+                <div class="form-group"
+                     ng-class="{ 'has-error' : userForm.zipDesc.$invalid && !userForm.zipDesc.$pristine }">
+                    <label>资源描述</label>
+                    <textarea name="zipDesc" class="form-control" ng-model="version.zipDesc" rows="7"></textarea>
+
+                    <p ng-show="userForm.zipDesc.$invalid && !userForm.zipDesc.$pristine" class="help-block">
+                        请填写资源描述。</p>
+                </div>
+
+                <!-- zip下载地址-->
+                <div class="form-group"
+                     ng-class="{ 'has-error' : userForm.zipDownloadUrl.$invalid && !userForm.zipDownloadUrl.$pristine }">
+                    <label>资源下载地址</label>
+                    <input type="text" name="zipDownloadUrl" class="form-control" ng-model="version.zipDownloadUrl"
+                           readonly>
+
+                    <p ng-show="userForm.zipDownloadUrl.$invalid && !userForm.zipDownloadUrl.$pristine"
+                       class="help-block">请填写资源下载地址。</p>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="well">
+                                <div>
+                                    <div class="up_delete_btn">
+                                        <span class="up_load_icon">点击添加<input type="file" id="zip_file"
+                                                                              multiple/></span>
+                                        <button ng-click="uploadFile(version.zipDownloadUrl,'zip',versionControl.commonName,version.zipVersionNumber)">点击上传</button>
+                                    </div>
+                                </div>
+                                <div ng-repeat="file in files"
+                                     style="margin-top: 20px; border-bottom-color: antiquewhite; border-bottom-style: double;"
+                                     class="hidden">
+                                    <div ng-if="versionControl.file_type(file, 'zip')">
+                                        <span>{{file.name}}</span>
+
+                                        <div style="float: right;">
+                                            <span>{{file.humanSize}}</span><a ng-click="versionControl.btn_remove(file)"
+                                                                              title="Remove from list to be uploaded"><i
+                                                class="icon-remove"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+    <div class="col-sm-12 success_btn">
+        <button class="btn btn-success" ng-click="versionsOff(version,'edit')" ng-disabled="userForm.$invalid"
+                ng-show="!version.isOffShelves==2">
+            <i class="glyphicon glyphicon-trash"></i>下架
+        </button>
+        <button class="btn btn-success" ng-click="versionControl.updateVersion(userForm.$valid,version)"
+                ng-disabled="userForm.$invalid">
+            <i class="glyphicon glyphicon-edit"></i>修改版本
+        </button>
+    </div>
+</div>
+<!-- /container -->

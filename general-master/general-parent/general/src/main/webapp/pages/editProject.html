@@ -1,0 +1,52 @@
+﻿<div class="container col-lg-12">
+	<div class="panel panel-default">
+		<div class="bootstrap-admin-panel-content">
+			<div class="page-header">
+				<h1>修改项目</h1>
+			</div>
+
+			<form class="form-horizontal" name="submitForm" novalidate>
+				<!-- id -->
+				<input type="hidden" name="vcProjectId" class="form-control" ng-model="project.vcProjectId">
+
+				<!-- 项目唯一标识-->
+				<div class="form-group">
+					<label class="col-lg-2 control-label" for="hosname"><span class="text-danger">*</span>&nbsp;项目唯一标识</label>
+					<div class="col-lg-8">
+						<label class="control-label">{{project.vcProjectId}}</label>
+					</div>
+				</div>
+
+				<!-- 医院名称 -->
+				<div class="form-group" ng-class="{ 'has-error' : submitForm.hospitalName.$invalid && !userForm.hospitalName.$pristine }">
+					<label class="col-lg-2 control-label" for="hosname"><span class="text-danger">*</span>&nbsp;医院名称</label>
+					<div class="col-lg-8">
+						<input type="text" name="hospitalName" class="form-control" ng-model="project.hospitalName" placeholder="请输入完整的医院名称" ng-minlength="1" ng-maxlength="50" required>
+						<p ng-show="submitForm.hospitalName.$invalid && !submitForm.hospitalName.$pristine" class="help-block">请输入1~50位的医院名称.</p>
+					</div>
+				</div>
+
+				<!-- NAME -->
+				<div class="form-group" ng-class="{ 'has-error' : submitForm.projectName.$invalid && !userForm.projectName.$pristine }">
+					<label class="col-lg-2 control-label" for="pojname"><span class="text-danger">*</span>&nbsp;项目名称</label>
+					<div class="col-lg-8">
+						<input type="text" name="projectName" class="form-control" ng-model="project.projectName" placeholder="请输入项目名称，如:掌上浙一" ng-minlength="1" ng-maxlength="40" required>
+						<p ng-show="submitForm.projectName.$invalid && !submitForm.projectName.$pristine" class="help-block">请输入1~40位的项目名称.</p>
+					</div>
+				</div>
+				<div class="ebtn_box">
+					<button class="btn btn-success" ng-click="versionControl.updateProject(submitForm.$valid,project)" ng-disabled="submitForm.$invalid">
+						<i class="glyphicon glyphicon-edit"></i>保存
+					</button>
+
+					<a ui-sref="^">
+						<button class="btn btn-success">
+							<i class="glyphicon glyphicon-remove-circle"></i> 取消
+						</button>
+					</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- /container -->

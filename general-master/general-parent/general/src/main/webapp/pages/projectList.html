@@ -1,0 +1,86 @@
+﻿<div class="container col-lg-12">
+
+    <div>
+        <div class="project_table">
+            <table class="table table-bordered bootstrap-admin-table-with-actions pro_table">
+                <thead>
+                <div ui-content-for="title">
+                    <div class="col-sm-12 project_top">
+                        <u class="project_top_icon"></u>
+                        <span>项目列表</span>
+                    </div>
+                    <div class="left bootstrap-admin-above-content-title mar_bot30"
+                         ng-if="security.hasPermission(PERMISSION.PROJECT_CREATE)">
+                        <a ui-sref=".projectsAdd">
+                            <button class="btn btn-sm btn-success">
+                                <i class="glyphicon glyphicon-plus"></i> 添加项目
+                            </button>
+                        </a>
+                    </div>
+
+						<span class="small right search_father"
+                              ng-if="security.hasPermission(PERMISSION.PROJECT_SEARCH)">
+							<input class="form-control input_sth" ng-model="versionControl.search"
+                                   ng-keydown="searchKeyDown($event)"
+                                   placeholder="请输入项目名称或医院名称">
+							<button type="button" class="btn btn-success btn_green"
+                                    ng-click="versionControl.loadAllProjects(paginationConf,versionControl.search)">搜索
+                            </button>
+							<u class="search_icon"></u>
+						</span>
+                </div>
+                <tr class="tr_top_back">
+                    <th>序号</th>
+                    <th><a href="" ng-click="predicate = 'hospitalName'; reverse=!reverse">医院名称</a></th>
+                    <th><a href="" ng-click="predicate = 'projectName'; reverse=!reverse">项目名称</a></th>
+                    <th><a href="" ng-click="predicate = 'createdon'; reverse=!reverse">创建时间</a></th>
+                    <th ng-if="security.hasPermission(PERMISSION.PROJECT_UPDATE)||
+                        security.hasPermission(PERMISSION.PROJECT_SOFTWARE)">
+                        <a>操作</a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="name" ng-show="versionControl.lstProject.length>0">
+                <tr ng-repeat="project in versionControl.lstProject | orderBy:predicate:reverse">
+                    <td style="border-top:0;border-color:#f0f0f0;" ng-bind="$index+startIndex">1</td>
+
+                    <td style="border-top:0;border-color:#f0f0f0;">{{project.hospitalName}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{project.projectName}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;">{{project.createdon| date:'yyyy.MM.dd HH:mm'}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;" class="actions"
+                        ng-if="security.hasPermission(PERMISSION.PROJECT_UPDATE)||
+                        security.hasPermission(PERMISSION.PROJECT_SOFTWARE)">
+                        <a ui-sref=".projectsEdit({pid : project.vcProjectId})" title="修改"
+                           ng-if="security.hasPermission(PERMISSION.PROJECT_UPDATE)">
+                            <button class="btn btn-xs btn-group btn_father">
+                                <i class="edit"></i>
+                            </button>
+                        </a>
+                        <a ui-sref=".softWaresList({sPid : project.vcProjectId})" title="查看软件"
+                           ng-if="security.hasPermission(PERMISSION.PROJECT_SOFTWARE)">
+                            <button class="btn btn-xs btn-group btn_father">
+                                <i class="look"></i>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="panel-body project_null"
+                 ng-show="versionControl.lstProject.length<=0&&(!search||search=='')">
+                <div class="no-data">
+                    请添加项目!
+                </div>
+            </div>
+
+            <div class="panel-body project_null" ng-show="versionControl.lstProject.length<=0&&(search)">
+                <div class="no-data">
+                    暂无相关结果!
+                </div>
+            </div>
+        </div>
+        <div class="right" ng-show="versionControl.lstProject.length>0">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+    </div>
+</div>

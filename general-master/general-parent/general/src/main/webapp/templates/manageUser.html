@@ -1,0 +1,107 @@
+<style>
+    .ngdialog-message{
+        height: 500px;
+        position: relative;
+        padding-top: 40px;
+    }
+    .titleleft,.titleright{
+        position: absolute;
+        top: 10px;
+        line-height: 40px;
+        width: 45%;
+        text-align: center;
+    }
+    .titleleft{
+        left: 0px;
+    }
+    .titleright{
+        right: 0px;
+    }
+    .cydiv-left{
+        width: 45%;
+        height: 400px;
+        border: #333 solid 1px;
+        margin: 10px auto;
+        background: #ffffff;
+        float: left;
+        overflow: auto;
+    }
+    .cydiv-right{
+        width: 45%;
+        height: 400px;
+        border: #333 solid 1px;
+        margin: 10px auto;
+        background: #ffffff;
+        float: right;
+        overflow: auto;
+    }
+    .cydiv-center{
+        width: 10%;
+        height: 400px;
+        margin: 10px auto;
+        float: left;
+        text-align: center;
+        padding-top: 100px;
+    }
+    .cydiv-center button{
+        width: 70%;
+        margin-bottom: 10px;
+    }
+    .cydivlist{
+        height: 30px;
+        line-height: 30px;
+        border-bottom: #e3e3e3 solid 1px;
+        font-size: 15px;
+        padding: 0px 10px;
+        cursor: pointer;
+    }
+    h1.cydivlist{
+        height: 30px;
+        line-height: 30px;
+        border-bottom: #e3e3e3 solid 1px;
+        font-size: 15px;
+        padding: 0px 10px;
+        cursor: pointer;
+        margin: 0px;
+    }
+    .cydivlist.active{
+        background: #f1f1f1;
+    }
+</style>
+<div class="ngdialog-message">
+    <div class='titleleft'>待选用户</div>
+    <div class='titleright'>当前用户</div>
+    <div class="cydiv-left">
+        <span  ng-repeat="user in unselectedUser">
+            <div class="cydivlist" ng-click="roleModel.selectUserToRole($event,user)">
+            {{user.username}}
+            </div>
+        </span>
+    </div>
+    <div class="cydiv-center">
+        <button  ng-click="roleModel.selectUserToRole($event,'add')">>></button>
+        <button  ng-click="roleModel.selectUserToRole($event,'remove')"><<</button>
+    </div>
+    <div class="cydiv-right">
+        <span  ng-repeat="user in selectedUser">
+            <h1 class="cydivlist" ng-click="roleModel.selectUserToRole($event,user)">
+                {{user.username}}
+            </h1>
+        </span>
+    </div>
+</div>
+<div class="ngdialog-buttons">
+    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(data)">确定</button>
+    <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('button')">取消</button>
+</div>
+<script>
+    $(function(){
+        $('.cydivlist').on('click',function(){
+            $(this).toggleClass('active');
+        });
+        $('#btn1').on('click',function(){
+
+        })
+
+    })
+</script>

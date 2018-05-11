@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html ng-app="ucmedAdmin">
+
+<head>
+    <title>版本发布管理后台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" media="screen" href="css/lib/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" href="css/lib/bootstrap-theme.min.css">
+
+    <!-- Bootstrap Admin Theme -->
+    <link rel="stylesheet" media="screen" href="css/lib/bootstrap-admin-theme.css">
+
+    <link rel="stylesheet" href="css/addedit.css"/>
+    <link rel="stylesheet" href="css/lib/index.css"/>
+
+    <!-- dialog -->
+    <link rel="stylesheet" href="css/lib/ngDialog/ngDialog.css">
+    <link rel="stylesheet" href="css/lib/ngDialog/ngDialog-theme-default.css">
+    <link rel="stylesheet" href="css/lib/ngDialog/ngDialog-theme-plain.css">
+    <link rel="stylesheet" href="css/lib/ngDialog/ngDialog-custom-width.css">
+
+    <!-- Vendors -->
+    <!-- (...) -->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="js/html5shiv.js"></script>
+    <script type="text/javascript" src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<!-- small navbar -->
+<nav class="navbar navbar-default navbar-fixed-top bootstrap-admin-navbar-sm" role="navigation" ng-show="isLogin">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="collapse navbar-collapse" ng-cloak>
+                    <ul class="nav navbar-nav navbar-left bootstrap-admin-theme-change-size">
+                        <li class="text-primary"></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" role="button" class="dropdown-toggle" data-hover="dropdown">
+                                <i class="glyphicon glyphicon-user">
+                                    {{globals.currentUser.surname}}
+                                </i>
+                                <i class="caret"></i></a>
+
+                            <ul class="dropdown-menu">
+                                <li role="presentation" class="divider"></li>
+                                <li><a style="cursor: pointer" ng-click="changepsw()">修改密码</a></li>
+                                <li><a ui-sref=".logout">注销</a></li>
+                                <li role="presentation" class="divider"></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+
+
+        <!-- left, vertical navbar -->
+        <div class="col-md-2 bootstrap-admin-col-left" ng-show="isLogin" ng-cloak>
+            <ul class="nav navbar-collapse collapse bootstrap-admin-navbar-side">
+                <li>
+                    <a ui-sref="projects" ui-sref-opts="{reload:true}"
+                       ng-if="security.hasPermission(PERMISSION.PROJECT_VIEW)">
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                        项目列表
+                    </a>
+                </li>
+                <li>
+                    <a ui-sref="hospitalSoftwareList" ui-sref-opts="{reload:true}"
+                       ng-if="security.hasPermission(PERMISSION.SOFTWARE_VIEW)">
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                        软件列表
+                    </a>
+                </li>
+                <li>
+                    <a ui-sref="userList" ui-sref-opts="{reload:true}"
+                       ng-if="security.hasPermission(PERMISSION.USER_VIEW)">
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                        用户管理
+                    </a>
+                </li>
+                <li>
+                    <a ui-sref="roleList" ui-sref-opts="{reload:true}"
+                       ng-if="security.hasPermission(PERMISSION.ROLE_VIEW)">
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                        角色管理
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="col-md-10">
+            <div class="" ng-show="isLogin" ncy-breadcrumb>
+            </div>
+            <!-- MAIN CONTENT AND INJECTED VIEWS -->
+            <div ui-view></div>
+        </div>
+    </div>
+</div>
+
+<!-- footer -->
+<div class="navbar footer" ng-cloak>
+    <div class="container  navbar-fixed-bottom">
+        <div class="row">
+            <div class="col-lg-12">
+                <footer role="contentinfo">
+                    <!--<p class="left"></p>-->
+                    <p class="text-center">&copy; 2016 <a href="http://ucmed.cn" target="_blank">Copyright © 2011-2016.
+                        杭州卓健信息科技有限公司</a></p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/lib/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/lib/angular.min.js"></script>
+<script type="text/javascript" src="js/lib/angular-ui-router.js"></script>
+<script type="text/javascript" src="js/lib/angular-cookies.min.js"></script>
+<script type="text/javascript" src="js/lib/angular-breadcrumb.js"></script>
+
+<!-- 弹窗-->
+<script type="text/javascript" src="js/lib/ngDialog.min.js"></script>
+<script type="text/javascript" src="js/lib/ngDialog.js"></script>
+
+<!-- 日期控件 -->
+<script src="js/lib/ui-bootstrap-tpls.min.js"></script>
+<script src="js/lib/datePicker.js"></script>
+<script src="js/lib/datePickerUtils.js"></script>
+<script src="js/lib/dateRange.js"></script>
+<script src="js/lib/input.js"></script>
+
+<!--angular基本配置-->
+<script type="text/javascript" src="js/util/module.js"></script>
+<script type="text/javascript" src="js/util/constants.js"></script>
+<script type="text/javascript" src="js/util/route.js"></script>
+
+<!--angular directive-->
+<script type="text/javascript" src="js/util/directive.js"></script>
+
+<!--Service-->
+<script type="text/javascript" src="js/service/VersionService.js"></script>
+<script type="text/javascript" src="js/service/SecurityService.js"></script>
+
+<!--Controller-->
+<script type="text/javascript" src="js/controller/ProjectController.js"></script>
+<script type="text/javascript" src="js/controller/SoftwareController.js"></script>
+<script type="text/javascript" src="js/controller/VersionController.js"></script>
+<script type="text/javascript" src="js/controller/LoginController.js"></script>
+<script type="text/javascript" src="js/controller/UserController.js"></script>
+<script type="text/javascript" src="js/controller/RoleController.js"></script>
+<script type="text/javascript" src="js/controller/BaseController.js"></script>
+
+<!--Model-->
+<script type="text/javascript" src="js/Model/VersionControl.js"></script>
+<script type="text/javascript" src="js/Model/Security.js"></script>
+<script type="text/javascript" src="js/Model/UserModel.js"></script>
+<script type="text/javascript" src="js/Model/RoleModel.js"></script>
+
+<script type="text/javascript" src="js/lib/uploader.min.js"></script>
+<script type="text/javascript" src="js/lib/tm.pagination.js"></script>
+<script type="text/javascript" src="js/style/bodyheight.js"></script>
+</body>
+
+</html>

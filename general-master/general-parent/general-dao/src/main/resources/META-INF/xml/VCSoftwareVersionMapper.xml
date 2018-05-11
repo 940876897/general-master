@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ucmed.general.vc.dao.VCSoftwareVersionMapper" >
+  <resultMap id="BaseResultMap" type="cn.ucmed.general.vc.model.VCSoftwareVersion" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="vc_software_version_id" property="vcSoftwareVersionId" jdbcType="VARCHAR" />
+    <result column="vc_project_software_id" property="vcProjectSoftwareId" jdbcType="VARCHAR" />
+    <result column="version_number" property="versionNumber" jdbcType="VARCHAR" />
+    <result column="app_version_number" property="appVersionNumber" jdbcType="VARCHAR" />
+    <result column="release_time" property="releaseTime" jdbcType="TIMESTAMP" />
+    <result column="app_download_url" property="appDownloadUrl" jdbcType="VARCHAR" />
+    <result column="app_force_update" property="appForceUpdate" jdbcType="CHAR" />
+    <result column="zip_version_number" property="zipVersionNumber" jdbcType="VARCHAR" />
+    <result column="zip_desc" property="zipDesc" jdbcType="VARCHAR" />
+    <result column="app_desc" property="appDesc" jdbcType="VARCHAR" />
+    <result column="zip_download_url" property="zipDownloadUrl" jdbcType="VARCHAR" />
+    <result column="is_off_shelves" property="isOffShelves" jdbcType="CHAR" />
+    <result column="current_max_app" property="currentMaxApp" jdbcType="VARCHAR" />
+    <result column="current_max_zip" property="currentMaxZip" jdbcType="VARCHAR" />
+    <result column="createdby" property="createdby" jdbcType="VARCHAR" />
+    <result column="createdon" property="createdon" jdbcType="TIMESTAMP" />
+    <result column="modifiedby" property="modifiedby" jdbcType="VARCHAR" />
+    <result column="modifiedon" property="modifiedon" jdbcType="TIMESTAMP" />
+    <result column="is_zip" property="isZip" jdbcType="CHAR" />
+    <result column="deletion_state" property="deletionState" jdbcType="CHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="zip_force_update" property="zipForceUpdate" jdbcType="CHAR" />
+  </resultMap>
+</mapper>

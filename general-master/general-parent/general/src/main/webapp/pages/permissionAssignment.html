@@ -1,0 +1,84 @@
+<div class="container col-lg-12">
+
+    <div>
+        <div class="project_table">
+            <table id="permission" class="table table-bordered bootstrap-admin-table-with-actions pro_table">
+                <thead>
+                <div ui-content-for="title">
+                    <div class="col-sm-12 project_top">
+                        <u class="project_top_icon"></u>
+                        <span>权限分配</span>
+                    </div>
+                    <div class="left bootstrap-admin-above-content-title mar_bot30">
+                        <div>角色名：<span>{{role.roleName}}</span></div>
+                        <div>创建时间：<span>{{role.createdon| date:'yyyy/MM/dd'}}</span></div>
+                        <div>描述：<span>{{role.description}}</span></div>
+                    </div>
+                </div>
+                <tr class="tr_top_back">
+                    <th><a>功能/页面</a></th>
+                    <th><a>全选</a></th>
+                    <th><a>操作权限</a></th>
+                </tr>
+                </thead>
+                <tbody class="name" ng-show="roleModel.permissionList.length>0">
+                <tr ng-show="roleModel.permissionList[0].type=='project'">
+                    <td style="border-top:0;border-color:#f0f0f0;background-color: #B2B4B7;font-weight:bold;text-align:left; " colspan="3">项目管理</td>
+                </tr>
+                <tr ng-repeat="l in roleModel.permissionList">
+                    <td style="border-top:0;border-color:#f0f0f0;" ng-show="l.type=='project'">{{l.name}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;" ng-show="l.type=='project'">
+                        <input type="checkbox" id={{l.id}} ng-checked="roleModel.isSelected(l.id,'checkall')" ng-click="roleModel.updateSelection($event,l.id,'checkall')">
+                    </td>
+                    <td style="border-top:0;border-color:#f0f0f0;" ng-show="l.type=='project'">
+                        <span ng-repeat="p in l.permissions">
+                            <input type="checkbox" id={{p.pid}} ng-checked="roleModel.isSelected(p.pid,'permission')" ng-click="roleModel.updateSelection($event,p.pid,'permission')">{{ p.pname }}
+                        </span>
+                    </td>
+                </tr>
+                <tr ng-show="roleModel.permissionList[3].type=='system'">
+                    <td style="border-top:0;border-color:#f0f0f0;background-color: #B2B4B7;font-weight:bold;text-align:left;" colspan="3">系统管理</td>
+                </tr>
+                <tr ng-repeat="ll in roleModel.permissionList">
+                    <td style="border-top:0;border-color:#f0f0f0;" ng-show="ll.type=='system'">{{ll.name}}</td>
+                    <td style="border-top:0;border-color:#f0f0f0;" ng-show="ll.type=='system'">
+                        <input type="checkbox" id={{ll.id}} ng-checked="roleModel.isSelected(ll.id,'checkall')" ng-click="roleModel.updateSelection($event,ll.id,'checkall')">
+                    </td>
+                    <td style="border-top:0;border-color:#f0f0f0;" ng-show="ll.type=='system'">
+                        <span ng-repeat="pp in ll.permissions">
+                            <input type="checkbox" id={{pp.pid}} ng-checked="roleModel.isSelected(pp.pid,'permission')" ng-click="roleModel.updateSelection($event,pp.pid,'permission')">{{ pp.pname }}
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+<!--            <div class="panel-body project_null" ng-show="roleModel.permissionList.length>0">
+                <div class="ngdialog-buttons">
+                    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="">保存</button>
+                    <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="roleModel.loadAllRoles()">取消</button>
+                </div>
+            </div>-->
+
+            <div class="ebtn_box" ng-show="roleModel.permissionList.length>0">
+                <button class="btn btn-success" ng-click="roleModel.roleAddPermission(role)" ng-disabled="submitForm.$invalid">
+                    <i class="glyphicon glyphicon-edit"></i>保存
+                </button>
+
+                <a ui-sref="^">
+                    <button class="btn btn-success">
+                        <i class="glyphicon glyphicon-remove-circle"></i> 取消
+                    </button>
+                </a>
+            </div>
+
+
+
+            <div class="panel-body project_null" ng-show="roleModel.permissionList.length<=0">
+                <div class="no-data">
+                    暂无相关结果!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ucmed.general.shiro.dao.RolePermissionMapper">
+
+
+	<insert id="batchAdd"
+			parameterType="java.util.Set">
+		insert into rp_roles_permissions
+		(rp_roles_permissions_id,r_roles_id, p_permissions_id,
+		createdby, createdon, modifiedby, modifiedon,
+		deletion_state, description)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(
+			#{item.rolePermissionId,jdbcType=VARCHAR},
+			#{item.rRolesId,jdbcType=VARCHAR},
+			(
+			SELECT
+			p_permissions_id AS r_roles_id
+			FROM
+			p_permissions
+			WHERE
+			permission = #{item.pPermissionsId,jdbcType=VARCHAR}
+			),
+			#{item.createdby,jdbcType=VARCHAR},
+			#{item.createdon,jdbcType=TIMESTAMP},
+			#{item.modifiedby,jdbcType=VARCHAR},
+			#{item.modifiedon,jdbcType=TIMESTAMP},
+			#{item.deletionState,jdbcType=CHAR},
+			#{item.description,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+
+
+	<update id="batchDeleteByRoleId" parameterType="java.util.List">
+		update rp_roles_permissions set deletion_state = '1' where
+		r_roles_id=#{roleId,jdbcType=VARCHAR} and
+		p_permissions_id in
+		<foreach collection="list" item="item" open="(" separator=","
+				 close=")">
+			#{item.permissionId,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+
+</mapper>

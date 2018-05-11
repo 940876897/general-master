@@ -1,0 +1,34 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
+
+    <changeSet id="1.0.10" author="system">
+        <tagDatabase tag="1.0.10"/>
+    </changeSet>
+
+    <changeSet id="1.0.10_Base_Structure" author="system">
+        <sqlFile encoding="UTF-8" relativeToChangelogFile="true" path="Base_Structure.sql"/>
+        <rollback>
+            DROP TABLE IF EXISTS `last_key`;
+            DROP TABLE IF EXISTS `vc_project`;
+            DROP TABLE IF EXISTS `vc_project_software`;
+            DROP TABLE IF EXISTS `vc_software_version`;
+            DROP TABLE IF EXISTS `version_info`;
+        </rollback>
+    </changeSet>
+
+    <include file="Base_Data.xml" relativeToChangelogFile="true"/>
+
+
+    <changeSet id="1.0.10_data_last_key" author="system">
+        <sqlFile encoding="UTF-8" relativeToChangelogFile="true" path="data/last_key.sql"/>
+        <rollback>
+            DELETE
+            FROM
+            last_key
+            WHERE
+            last_key_id = '87fd378f-4261-11e5-a6af-0050569b08a8'
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

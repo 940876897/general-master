@@ -1,0 +1,3 @@
+﻿ucmedAdmin.controller('baseController', function () {
+
+});
