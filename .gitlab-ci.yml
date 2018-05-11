@@ -1,0 +1,51 @@
+build-artifact: 
+    image: ccr.ccs.tencentyun.com/big-devil/ie:1.0.0
+    stage: build
+    script: 
+        - mvn -v
+        - mvn -f general-master/general-parent/pom.xml clean package -Dmaven.javadoc.skip=true -Dmaven.test.skip=true -Pisv
+        - echo 'PROJECT_VERSION=${project.version}' | mvn -f general-master/general-parent/pom.xml help:evaluate | grep PROJECT_VERSION > general-master/general-parent/general/target/VERSION
+    artifacts: 
+        paths: 
+            - general-master/general-parent/general/target/*.war
+            - general-master/general-parent/general/target/VERSION
+    only: 
+        - develop
+    tags: 
+        - maven            
+deploy-docker-image:
+    image: docker
+    stage: deploy
+    script: 
+        - docker info
+        - pwd
+        - cat general-master/general-parent/general/target/VERSION
+        - source general-master/general-parent/general/target/VERSION
+        - echo ${PROJECT_VERSION}
+        - mkdir ~/.docker
+        - echo ${DOCKER_AUTH_CONFIG} > ~/.docker/config.json
+        - docker build -t ccr.ccs.tencentyun.com/big-devil/general:${PROJECT_VERSION} .
+        - docker push ccr.ccs.tencentyun.com/big-devil/general:${PROJECT_VERSION}
+        - docker images | grep 'ccr.ccs.tencentyun.com/big-devil/general' 
+    dependencies: 
+        - build-artifact
+    only: 
+        - develop
+    tags: 
+        - maven
+        
+sonarqube_preview:
+  image: ccr.ccs.tencentyun.com/big-devil/ie:1.0.0
+  script:
+    - git --version
+    - mvn -v
+    - git checkout origin/develop
+    - git merge $CI_COMMIT_SHA --no-commit --no-ff
+    - mvn -f general-master/general-parent/pom.xml --batch-mode compile sonar:sonar -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -Dsonar.analysis.mode=preview -Dsonar.gitlab.project_id=$CI_PROJECT_PATH -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
+  stage: test
+  
+  except:
+    - develop
+    - master
+  tags:
+    - maven        
